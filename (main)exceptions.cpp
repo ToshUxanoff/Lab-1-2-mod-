@@ -61,17 +61,16 @@ float floatFromString(const char* data)
 {
 	int start = 0;
 	int len = 0;
-	int result = 0;
+	float result = 0;
 	int step = 0;
 	int x = 0;
-
-	while (data[len+start])
+	while (data[len+start+step])
 	{
 		if (len == 0 && (data[len + start] == '0'|| data[len+start] == '-'))
 		{
 			start++;
 		}
-		else if (data[len + start] == '.' || data[len + start] == ',')
+		if (data[len + start] == ',' || data[len + start] == '.')
 		{
 			break;
 		}
@@ -82,11 +81,23 @@ float floatFromString(const char* data)
 	}
 	for (int i = start; i < len + start; i++)
 	{
-		if (data[i] >= 48 && data[i] <= 57)
+			if (data[i] >= 48 && data[i] <= 57)	
+			{
+				x = data[i] - 48;
+				result += (pow(10, (len - step - 1))*x);
+				step++;
+			}
+			else
+			{
+				throw ErrorSymbol();
+			}
+	}
+	for (int i = 1; data[len + start + i]; i++)
+	{
+		if (data[len + start + i] >= 48 && data[len + start + i] <= 57)
 		{
-			x = data[i] - 48;
-			result += (pow(10, (len - step - 1))*x);
-			step++;
+			x = data[len + start + i] - 48;
+			result += (1 / (pow(10, i)))*x;
 		}
 		else
 		{
@@ -97,7 +108,7 @@ float floatFromString(const char* data)
 	{
 		throw Overflow();
 	}
-	return 0;
+	return result;
 }
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -122,13 +133,13 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	try
 	{
-		intFromString("0xcdd");
+		intFromString("0.124xcg");
 	}
 	catch (ErrorSymbol & exc)
 	{
 		std::cout << "Uncorrect input (int)!" << std::endl;
 	}
-	floatFromString("-00,214748345649");
+	floatFromString("-00,2147");
 	try
 	{
 		floatFromString("-0214748345648");
@@ -139,7 +150,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	try
 	{
-		floatFromString("0x.32rewg");
+		floatFromString("10.324x5");
 	}
 	catch (ErrorSymbol & exc)
 	{
