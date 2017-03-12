@@ -64,13 +64,13 @@ float floatFromString(const char* data)
 	float result = 0;
 	int step = 0;
 	int x = 0;
-	while (data[len+start+step])
+	while (data[len+start])
 	{
 		if (len == 0 && (data[len + start] == '0'|| data[len+start] == '-'))
 		{
 			start++;
 		}
-		if (data[len + start] == ',' || data[len + start] == '.')
+		else if (data[len + start] == ',' || data[len + start] == '.')
 		{
 			break;
 		}
@@ -97,7 +97,7 @@ float floatFromString(const char* data)
 		if (data[len + start + i] >= 48 && data[len + start + i] <= 57)
 		{
 			x = data[len + start + i] - 48;
-			result += (1 / (pow(10, i)))*x;
+			result += (1 / pow(10, i))*x;
 		}
 		else
 		{
@@ -113,6 +113,8 @@ float floatFromString(const char* data)
 int _tmain(int argc, _TCHAR* argv[])
 {
 	boolFromString("true");
+	boolFromString("false");
+	boolFromString("1");
 	try
 	{
 		boolFromString("truuu");
@@ -139,7 +141,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		std::cout << "Uncorrect input (int)!" << std::endl;
 	}
-	floatFromString("-00,2147");
+	floatFromString("11245.6623");
 	try
 	{
 		floatFromString("-0214748345648");
@@ -159,3 +161,4 @@ int _tmain(int argc, _TCHAR* argv[])
 	system("pause");
 	return 0;
 }
+
