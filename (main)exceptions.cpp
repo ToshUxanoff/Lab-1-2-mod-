@@ -23,7 +23,6 @@ int intFromString(const char* data)
 	int start = 0;
 	int len = 0;
 	int result = 0;
-	int step = 0;
 	int x = 0;
 	bool minus = false;
 	while (data[len + start])
@@ -42,26 +41,25 @@ int intFromString(const char* data)
 			len++;
 		}
 	}
-	for (int i = start; i < len+start; i++)
+	for (int i = start; i < len+start; i++) 
 	{
 		if (data[i] >= 48 && data[i] <= 57) 
 		{
-			x = data[i] - 48;
-			result += (pow(10, (len - step - 1))*x);
-			step++;
+			x = (data[i] - 48) * pow(10, ((len + start) - i - 1));
+			result += x;
 		}
 		else
 		{
 			throw ErrorSymbol();
 		}
 	}	
-	if (result >= 2147483648)
-	{
-		throw Overflow();
-	}
 	if (minus == true)
 	{
-		return -result;
+		result *= -1;
+	}
+	if ((minus == true && result >= 0)||(minus == false && result < 0))
+	{
+		throw Overflow();
 	}
 	return result;
 }
@@ -145,7 +143,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	std::cout << intFromString("2147483646") << std::endl;
 	try
 	{
-		intFromString("00435324832235");
+		std::cout << intFromString("00415623534432");
 	}
 	catch (Overflow & exc)
 	{
