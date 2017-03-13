@@ -25,15 +25,15 @@ int intFromString(const char* data)
 	int result = 0;
 	int x = 0;
 	bool minus = false;
-	while (data[len + start])
+	if (data[0] == '-')
 	{
-		if (len == 0 && data[len+start] == '0')
+		minus = true;
+		start++;
+	}
+	while (data[len + start] != '\0')
+	{
+		if (len == 0 && data[len + start] == '0')
 		{
-			start++;
-		}
-		else if (len == 0 && data[len + start] == '-')
-		{
-			minus = true;
 			start++;
 		}
 		else
@@ -41,11 +41,11 @@ int intFromString(const char* data)
 			len++;
 		}
 	}
-	for (int i = start; i < len+start; i++) 
+	for (int i = 0; i < len; i++) 
 	{
-		if (data[i] >= 48 && data[i] <= 57) 
+		if (data[i + start] >= 48 && data[i + start] <= 57) 
 		{
-			x = (data[i] - 48) * pow(10, ((len + start) - i - 1));
+			x = (data[i + start] - 48) * (pow(10, (len - i - 1)));
 			result += x;
 		}
 		else
@@ -140,7 +140,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		std::cout << "Uncorrect input (bool)!" << std::endl;
 	}	
 	std::cout << intFromString("-214748364") << std::endl;
-	std::cout << intFromString("2147483646") << std::endl;
+	std::cout << intFromString("020214846") << std::endl;
 	try
 	{
 		std::cout << intFromString("00415623534432");
