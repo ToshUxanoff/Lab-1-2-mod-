@@ -23,7 +23,6 @@ int intFromString(const char* data)
 	int start = 0;
 	int len = 0;
 	int result = 0;
-	int x = 0;
 	bool minus = false;
 	if (data[0] == '-')
 	{
@@ -45,8 +44,9 @@ int intFromString(const char* data)
 	{
 		if (data[i + start] >= 48 && data[i + start] <= 57) 
 		{
-			x = (data[i + start] - 48) * (pow(10, (len - i - 1)));
-			result += x;
+			result *= 10;							//специально так
+			result += (data[i + start] - 48);
+			
 		}
 		else
 		{
