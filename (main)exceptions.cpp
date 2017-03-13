@@ -25,35 +25,43 @@ int intFromString(const char* data)
 	int result = 0;
 	int step = 0;
 	int x = 0;
+	bool minus = false;
 	while (data[len + start])
 	{
-		 if ((data[len+start] == '-' || data[len+start] == '0') && len == 0)
+		if (len == 0 && data[len+start] == '0')
 		{
+			start++;
+		}
+		else if (len == 0 && data[len + start] == '-')
+		{
+			minus = true;
 			start++;
 		}
 		else
 		{
 			len++;
 		}
-		
 	}
-		for (int i = start; i < len+start; i++)
+	for (int i = start; i < len+start; i++)
+	{
+		if (data[i] >= 48 && data[i] <= 57) 
 		{
-			if (data[i] >= 48 && data[i] <= 57) 
-			{
-				x = data[i] - 48;
-				result += (pow(10, (len - step - 1))*x);
-				step++;
-			}
-			else
-			{
-				throw ErrorSymbol();
-			}
+			x = data[i] - 48;
+			result += (pow(10, (len - step - 1))*x);
+			step++;
 		}
-	
+		else
+		{
+			throw ErrorSymbol();
+		}
+	}	
 	if (result >= 2147483648)
 	{
 		throw Overflow();
+	}
+	if (minus == true)
+	{
+		return -result;
 	}
 	return result;
 }
@@ -64,10 +72,16 @@ float floatFromString(const char* data)
 	float result = 0;
 	int step = 0;
 	int x = 0;
+	bool minus = false;
 	while (data[len+start])
 	{
-		if (len == 0 && (data[len + start] == '0'|| data[len+start] == '-'))
+		if (len == 0 && data[len + start] == '0')
 		{
+			start++;
+		}
+		else if (len == 0 && data[len + start] == '-')
+		{
+			minus = true;
 			start++;
 		}
 		else if (data[len + start] == ',' || data[len + start] == '.')
@@ -108,6 +122,10 @@ float floatFromString(const char* data)
 	{
 		throw Overflow();
 	}
+	if (minus == true)
+	{
+		return -result;
+	}
 	return result;
 }
 int _tmain(int argc, _TCHAR* argv[])
@@ -123,8 +141,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		std::cout << "Uncorrect input (bool)!" << std::endl;
 	}	
-	intFromString("-214748364");
-	intFromString("2147483646");
+	std::cout << intFromString("-214748364") << std::endl;
+	std::cout << intFromString("2147483646") << std::endl;
 	try
 	{
 		intFromString("00435324832235");
@@ -135,13 +153,13 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	try
 	{
-		intFromString("0.124xcg");
+		intFromString("034.5");
 	}
 	catch (ErrorSymbol & exc)
 	{
 		std::cout << "Uncorrect input (int)!" << std::endl;
 	}
-	floatFromString("11245.6623");
+	std::cout << floatFromString("-11245.6623") << std::endl;
 	try
 	{
 		floatFromString("-0214748345648");
@@ -161,4 +179,3 @@ int _tmain(int argc, _TCHAR* argv[])
 	system("pause");
 	return 0;
 }
-
