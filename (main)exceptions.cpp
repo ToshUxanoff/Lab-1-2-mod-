@@ -22,6 +22,7 @@ int intFromString(const char* data)
 {
 	int start = 0;
 	int len = 0;
+	double bufresult = 0;
 	int result = 0;
 	bool minus = false;
 	if (data[0] == '-')
@@ -49,19 +50,19 @@ int intFromString(const char* data)
 	{
 		if (data[i + start] >= 48 && data[i + start] <= 57) 
 		{
-			result *= 10;					//специально так
-			result += data[i + start] - 48;
+			bufresult *= 10;					//специально так
+			bufresult += data[i + start] - 48;
 		}
 		else 
 		{
 			throw ErrorSymbol();
 		}
 	}
-	int x = result / (pow(10, len - 1)); 
-	if (result < 0 || x != data[start] - 48)
+	if (bufresult >= 2147483648)
 	{
 		throw Overflow();
 	}
+	result = static_cast <int> (bufresult);
 	if (minus == true)
 	{
 		result *= -1;
