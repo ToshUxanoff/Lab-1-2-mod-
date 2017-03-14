@@ -40,31 +40,31 @@ int intFromString(const char* data)
 			len++;
 		}
 	}
-	if (len > 10) //2147483648 10-ти значное
+	if (len > 10)
 	{
 		throw Overflow();
 	}
+	int buf = 0;
 	for (int i = 0; i < len; i++) 
 	{
 		if (data[i + start] >= 48 && data[i + start] <= 57) 
 		{
-			result *= 10;							//специально так
+			result *= 10;					//специально так
 			result += data[i + start] - 48;
-			
 		}
-		else
+		else 
 		{
 			throw ErrorSymbol();
 		}
-		
-	}	
+	}
+	int x = result / (pow(10, len - 1));  //1 цифра
+	if (result < 0 || x != data[start] - 48)
+	{
+		throw Overflow();
+	}
 	if (minus == true)
 	{
 		result *= -1;
-	}
-	if ((minus == true && result >= 0) || (minus == false && result < 0))
-	{
-		throw Overflow();
 	}
 	return result;
 }
