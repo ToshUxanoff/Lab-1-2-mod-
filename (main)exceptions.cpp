@@ -40,7 +40,7 @@ int intFromString(const char* data)
 			len++;
 		}
 	}
-	if (len > 10)
+	if (len > 10) //2147483648 10-ти значное
 	{
 		throw Overflow();
 	}
@@ -56,12 +56,13 @@ int intFromString(const char* data)
 		{
 			throw ErrorSymbol();
 		}
+		
 	}	
 	if (minus == true)
 	{
 		result *= -1;
 	}
-	if ((minus == true && result >= 0)||(minus == false && result < 0))
+	if ((minus == true && result >= 0) || (minus == false && result < 0))
 	{
 		throw Overflow();
 	}
@@ -143,7 +144,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		std::cout << "Uncorrect input (bool)!" << std::endl;
 	}	
-	std::cout << intFromString("-214748364") << std::endl;
+	std::cout << intFromString("-214748364809") << std::endl;
 	std::cout << intFromString("020214846") << std::endl;
 	try
 	{
