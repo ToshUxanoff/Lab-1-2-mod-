@@ -40,12 +40,16 @@ int intFromString(const char* data)
 			len++;
 		}
 	}
+	if (len > 10)
+	{
+		throw Overflow();
+	}
 	for (int i = 0; i < len; i++) 
 	{
 		if (data[i + start] >= 48 && data[i + start] <= 57) 
 		{
 			result *= 10;							//специально так
-			result += (data[i + start] - 48);
+			result += data[i + start] - 48;
 			
 		}
 		else
