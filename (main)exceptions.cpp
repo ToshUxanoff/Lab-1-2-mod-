@@ -57,7 +57,7 @@ int intFromString(const char* data)
 			throw ErrorSymbol();
 		}
 	}
-	int x = result / (pow(10, len - 1));  //1 цифра
+	int x = result / (pow(10, len - 1)); 
 	if (result < 0 || x != data[start] - 48)
 	{
 		throw Overflow();
