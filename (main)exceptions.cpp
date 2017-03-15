@@ -1,8 +1,10 @@
+
 #include "stdafx.h"
 #include "iostream"
 #include "CastException.h"
 #include "ErrorSymbol.h"
 #include "Overflow.h"
+#include "string"
 bool boolFromString(const char* data)
 {
 	if (strcmp(data, "false") == 0 || strcmp(data, "0") == 0)
@@ -18,7 +20,7 @@ bool boolFromString(const char* data)
 		throw ErrorSymbol();
 	}
 }
-int intFromString(const char* data)
+int intFromString(std::string data)
 {
 	int start = 0;
 	int len = 0;
@@ -30,7 +32,7 @@ int intFromString(const char* data)
 		minus = true;
 		start++;
 	}
-	while (data[len + start] != '\0')
+	while (data[len + start])
 	{
 		if (len == 0 && data[len + start] == '0')
 		{
@@ -41,16 +43,12 @@ int intFromString(const char* data)
 			len++;
 		}
 	}
-	if (len > 10)
-	{
-		throw Overflow();
-	}
 	int buf = 0;
 	for (int i = 0; i < len; i++) 
 	{
 		if (data[i + start] >= 48 && data[i + start] <= 57) 
 		{
-			bufresult *= 10;					//специально так
+			bufresult *= 10;					
 			bufresult += data[i + start] - 48;
 		}
 		else 
@@ -58,7 +56,7 @@ int intFromString(const char* data)
 			throw ErrorSymbol();
 		}
 	}
-	if (bufresult >= 2147483648)
+	if (bufresult > INT_MAX && minus==false || -bufresult < INT_MIN && minus==true)
 	{
 		throw Overflow();
 	}
@@ -145,11 +143,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		std::cout << "Uncorrect input (bool)!" << std::endl;
 	}	
-	std::cout << intFromString("-214748364809") << std::endl;
-	std::cout << intFromString("020214846") << std::endl;
+	std::cout << intFromString("999999999") << std::endl;
+	std::cout << intFromString("247483648") << std::endl;
 	try
 	{
-		std::cout << intFromString("00415623534432");
+		intFromString("125497503943");
 	}
 	catch (Overflow & exc)
 	{
@@ -163,10 +161,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		std::cout << "Uncorrect input (int)!" << std::endl;
 	}
-	std::cout << floatFromString("-11245.6623") << std::endl;
+	std::cout << floatFromString("11245.6623") << std::endl;
 	try
 	{
-		floatFromString("-0214748345648");
+		floatFromString("0214748345648");
 	}
 	catch (Overflow &exc)
 	{
