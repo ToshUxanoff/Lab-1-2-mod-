@@ -20,7 +20,7 @@ bool boolFromString(const char* data)
 		throw ErrorSymbol();
 	}
 }
-int intFromString(std::string data)
+int intFromString(const char* data)
 {
 	int start = 0;
 	int len = 0;
